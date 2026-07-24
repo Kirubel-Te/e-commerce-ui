@@ -9,7 +9,7 @@ const Filter = () => {
     const router = useRouter()
     const pathname = usePathname()
     const handleSortClick = (category: string) =>{
-        const params = new URLSearchParams()
+        const params = new URLSearchParams(SearchParams)
         params.set("sort", category)
         router.push(`${pathname}?${params.toString()}`,{scroll: false})
     }
