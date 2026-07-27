@@ -6,6 +6,7 @@ import { ArrowRight , Trash2} from "lucide-react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { useState } from "react";
 import Image from "next/image";
+import useCartStore from "@/stores/CartStore";
 
 const steps = [
   {
@@ -88,6 +89,7 @@ const CartPage = () => {
     const SearchParams = useSearchParams()
 
     const activeStep = parseInt(SearchParams.get("step") || "1")
+    const {cart,removeFromCart} = useCartStore()
     return(
         <div className = "flex flex-col gap-8 items-center justify-center mt-12">
             <h1 className = "text-2xl font-medium">Your Shopping Cart</h1>
@@ -108,7 +110,7 @@ const CartPage = () => {
                 {/*steps*/}
                 <div className = "w-full lg:w-7/12 shadow-lg border-1 border-gray-200 flex flex-col gap-8 rounded-lg p-8">
                     {activeStep === 1 ? (
-                        cartItems.map((item) => (
+                        cart.map((item) => (
               // SINGLE CART ITEM
                             <div
                             className="flex items-center justify-between"
@@ -144,7 +146,7 @@ const CartPage = () => {
                                     </div>
                             {/* DELETE BUTTON */}
                                 <button
-                            // onClick={() => removeFromCart(item)}
+                                onClick={() => removeFromCart(item)}
                             className="w-8 h-8 rounded-full bg-red-100 hover:bg-red-200 transition-all duration-300 text-red-400 flex items-center justify-center cursor-pointer"
                             >
                             <Trash2 className="w-3 h-3" />
@@ -160,11 +162,11 @@ const CartPage = () => {
                     <div className = "flex flex-col gap-4">
                         <div className = "flex justify-between text-sm">
                             <p className = "text-gray-500">Subtotal</p>
-                            <p className = "font-medium">${cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}</p>
+                            <p className = "font-medium">${cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}</p>
                         </div>
                         <div className = "flex justify-between text-sm">
                             <p className = "text-gray-500">Discount(10%)</p>
-                            <p className = "font-medium">${(cartItems.reduce((total, item) => total + item.price * item.quantity, 0) * 0.1).toFixed(2)}</p>
+                            <p className = "font-medium">${(cart.reduce((total, item) => total + item.price * item.quantity, 0) * 0.1).toFixed(2)}</p>
                         </div>
                         <div className = "flex justify-between text-sm">
                             <p className = "text-gray-500">Shipping Fee</p>
@@ -173,7 +175,7 @@ const CartPage = () => {
                         <hr className = "border-gray-200 border-1"/>
                         <div className = "flex justify-between text-sm  ">
                             <p className = "text-gray-800 font-semibold">Total</p>
-                            <p className = "font-medium">${(cartItems.reduce((total, item) => total + item.price * item.quantity, 0) - (cartItems.reduce((total, item) => total + item.price * item.quantity, 0) * 0.1) + 10).toFixed(2)}</p>
+                            <p className = "font-medium">${(cart.reduce((total, item) => total + item.price * item.quantity, 0) - (cart.reduce((total, item) => total + item.price * item.quantity, 0) * 0.1) + 10).toFixed(2)}</p>
                         </div>
                     </div>
                     {activeStep === 1 && (

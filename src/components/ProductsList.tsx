@@ -129,7 +129,7 @@ const ProductsList = ({ category,params }: { category: string, params: "homepage
                 
             </div>
             <Link href={category ? `/products/${category}` : `/products`} className="flex items-center justify-end mt-4 text-gray-500 hover:underline">
-                View All {category}
+                View All
             </Link>
         </div>
     )
