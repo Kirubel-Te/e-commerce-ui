@@ -36,7 +36,7 @@ const ProductCard = ({product}:{product: ProductType}) => {
 
     return(
         <div className = "shadow-lg rounded-lg overflow-hidden">
-            <Link href = {`/product/${product.id}`}>
+            <Link href = {`/products/${product.id}`}>
                 <div className = "relative aspect-[2/3]">
                     <Image src = {product.images[productType.color]} alt = {product.name} fill className = "object-cover hover:scale-105 transition-all duration-300"/>
                 </div>
