@@ -11,10 +11,12 @@ import {toast} from "react-toastify"
 const ProductCard = ({product}:{product: ProductType}) => {
 
     const {addToCart} = useCartStore()
+    const defaultSize = product.sizes[0] ?? "";
+    const defaultColor = product.colors[0] ?? "";
 
     const [productType, setProductType] = useState({
-        size: product.sizes[0],
-        color: product.colors[0]
+        size: defaultSize,
+        color: defaultColor
     })
     
     const handleProductType = ({type,value}:{type: "size" | "color", value: string})=>{
@@ -25,20 +27,26 @@ const ProductCard = ({product}:{product: ProductType}) => {
     }
 
     const handleAddToCart = () => {
+        const selectedSize = productType.size || defaultSize;
+        const selectedColor = productType.color || defaultColor;
+
         addToCart({
             ...product,
-            selectedSize: productType.size,
-            selectedColor: productType.color,
+            selectedSize,
+            selectedColor,
             quantity: 1,
         })
         toast.success("product added to cart")
     }
 
+    const selectedColor = productType.color || defaultColor;
+    const imageSrc = product.images[selectedColor] ?? product.images[defaultColor] ?? "";
+
     return(
         <div className = "shadow-lg rounded-lg overflow-hidden">
             <Link href = {`/products/${product.id}`}>
                 <div className = "relative aspect-[2/3]">
-                    <Image src = {product.images[productType.color]} alt = {product.name} fill className = "object-cover hover:scale-105 transition-all duration-300"/>
+                    <Image src = {imageSrc} alt = {product.name} fill className = "object-cover hover:scale-105 transition-all duration-300"/>
                 </div>
             </Link>
             <div className = "flex flex-col gap-4 p-4">
