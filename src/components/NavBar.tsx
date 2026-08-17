@@ -1,10 +1,16 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
 import SearchBar from "./SearchBar"
 import { Bell, Home } from "lucide-react"
 import ShopingCartIcon from "./ShopingCartIcon"
+import { SignInButton, useUser } from "@clerk/nextjs"
+import ProfileButton from "./ProfileButton"
 
 const NavBar = () => {
+    const { isSignedIn, isLoaded } = useUser()
+
     return(
         <nav className = "flex items-center justify-between pb-4 border-b border-gray-200">
             <Link href = "/" className ="flex items-center gap-2  ">
@@ -18,7 +24,7 @@ const NavBar = () => {
                 </Link>
                 <Bell className = "w-4 h-4 text-gray-500"/>
                 <ShopingCartIcon/>
-                <Link href = "/login">sign In</Link>
+                {!isLoaded ? null : isSignedIn ? <ProfileButton /> : <SignInButton />}
             </div>
         </nav>
     )
