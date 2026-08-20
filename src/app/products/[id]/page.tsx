@@ -1,5 +1,5 @@
 import ProductInteraction from "@/components/ProductInteraction";
-import { ProductType } from "@/types";
+import { ProductType } from "@repo/types";
 import Image from "next/image";
 
 // TEMPORARY
@@ -18,6 +18,9 @@ const product: ProductType = {
     purple: "/products/1p.png",
     green: "/products/1gr.png",
   },
+  createdAt: new Date(),
+    updatedAt: new Date(),
+    categorySlug: "test"
 };
 
 export const generateMetadata = async ({
@@ -49,7 +52,8 @@ const ProductPage = async ({
 
   const selectedSize = size || (product.sizes[0] as string) || "";
   const selectedColor = color || defaultColor;
-  const imageSrc = product.images[selectedColor] ?? product.images[defaultColor] ?? "/placeholder.png";
+  const image = product.images as Record<string,string>
+  const imageSrc = image[selectedColor] ?? image[defaultColor] ?? "/placeholder.png";
 
   return (
     <div className="flex flex-col gap-4 lg:flex-row md:gap-12 mt-12">

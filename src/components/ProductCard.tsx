@@ -1,6 +1,6 @@
 "use client"
 
-import { ProductType } from "@/types"
+import { ProductType } from "@repo/types"
 import Link from "next/link"
 import Image from "next/image"
 import { ShoppingCart } from "lucide-react"
@@ -15,8 +15,8 @@ const ProductCard = ({product}:{product: ProductType}) => {
     const defaultColor = product.colors[0] ?? "";
 
     const [productType, setProductType] = useState({
-        size: defaultSize,
-        color: defaultColor
+        size: defaultSize!,
+        color: defaultColor!
     })
     
     const handleProductType = ({type,value}:{type: "size" | "color", value: string})=>{
@@ -40,7 +40,8 @@ const ProductCard = ({product}:{product: ProductType}) => {
     }
 
     const selectedColor = productType.color || defaultColor;
-    const imageSrc = product.images[selectedColor] ?? product.images[defaultColor] ?? "";
+    const image = product.images as Record<string,string>
+    const imageSrc = image[selectedColor] ?? image[defaultColor] ?? "";
 
     return(
         <div className = "shadow-lg rounded-lg overflow-hidden">
