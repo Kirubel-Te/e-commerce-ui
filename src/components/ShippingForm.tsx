@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const ShippingForm = ({
-  setShippingForm,
+  setShippingForm
 }: {
   setShippingForm: (data: ShippingFormInputs) => void;
 }) => {

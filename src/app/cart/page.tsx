@@ -7,6 +7,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { useState } from "react";
 import Image from "next/image";
 import useCartStore from "@/stores/CartStore";
+import StripePaymentForm from "@/components/StripePaymentForm";
 
 const steps = [
   {
@@ -94,9 +95,9 @@ const CartPage = () => {
                             );
                         })
                     ) : activeStep === 2 ? (
-                        <ShippingForm setShippingForm={setShippingForm} />
+                        <ShippingForm setShippingForm={setShippingForm}  />
                     ) : activeStep === 3 && shippingForm ? (
-                        <PaymentForm />
+                        <StripePaymentForm shippingForm={shippingForm}/>
                     ) : (
                         <p className = "text-sm text-gray-300">Please fill the shipment form first</p>
                     )}
