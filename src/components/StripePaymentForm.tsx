@@ -47,6 +47,8 @@ const StripePaymentForm = ({
 }) => {
   const { cart } = useCartStore();
   const [token, setToken] = useState<string | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const { getToken, isLoaded, isSignedIn } = useAuth();
 
   useEffect(() => {
@@ -54,14 +56,24 @@ const StripePaymentForm = ({
     getToken({ skipCache: true }).then(setToken).catch(() => setToken(null));
   }, [getToken, isLoaded, isSignedIn]);
 
+  useEffect(() => {
+    if (!token) return;
+    fetchClientSecret(cart, token)
+      .then(setClientSecret)
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : "Could not create checkout session");
+      });
+  }, [cart, token]);
+
   if (!isLoaded) return <p>Checking your sign-in...</p>;
   if (!isSignedIn) return <p>Please sign in before checkout.</p>;
-  if (!token) return <p>Preparing secure checkout...</p>;
+  if (error) return <p className="text-sm text-red-500">{error}</p>;
+  if (!clientSecret) return <p>Preparing secure checkout...</p>;
 
   return (
     <CheckoutElementsProvider
       stripe={stripe}
-      options={{ clientSecret: fetchClientSecret(cart, token) }}
+      options={{ clientSecret }}
     >
       <CheckoutForm shippingForm={shippingForm} />
     </CheckoutElementsProvider>
